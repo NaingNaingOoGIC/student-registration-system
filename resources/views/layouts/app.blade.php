@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,25 +16,48 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="icon" href="{{ asset('/images/logo.ico') }}" type="image/ico">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body>
+
+<body class="little-violet">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-white bg-white pastel shadow ">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    <img src="{{ asset('/images/navlogo.jpg') }}" class="rounded" style="width: 50px;height: 50px;"></a>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        @Auth
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('view-all-students') ? 'active' : '' }}"
+                                    href="{{ route('view-all-students') }}">{{ __('生徒一覧') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('edit-student') ? 'active' : '' }}"
+                                    href="{{ route('edit-student') }}">{{ __('生徒更新') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('add-new-student') ? 'active' : '' }}"
+                                    href="{{ route('add-new-student') }}">{{ __('生徒追加') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('remove-student') ? 'active' : '' }}"
+                                    href="{{ route('remove-student') }}">{{ __('生徒削除') }}</a>
+                            </li>
+                        @endAuth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -53,13 +77,14 @@
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
@@ -80,4 +105,5 @@
         </main>
     </div>
 </body>
+
 </html>
