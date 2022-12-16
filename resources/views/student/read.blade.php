@@ -13,30 +13,43 @@
                         <input class="form-control" type="text" placeholder="日付" aria-label="Date" id="regDate">
                     </div>
                 </div>
-                <div class="table-responsive  ">
-                    <table class="table table-borderd " id="studentTable">
+                <div class="table-responsive studentTable">
+                    <table id="studentList" class="table data-table">
                         <thead>
-                            <tr>
-                                <th>番</th>
-                                <th>氏名</th>
-                                <th>学生証番号</th>
-                                <th>年齢</th>
-                                <th>登録日</th>
-                            </tr>
+
+                            <th>番</th>
+                            <th>学生証番号</th>
+                            <th>名前</th>
+                            <th>年齢</th>
+                            <th>登録日</th>
+                            <th>削除</th>
                         </thead>
-                        @php($i = 0)
-                        <tbody>
-                            @foreach ($students as $student)
-                                <tr>
-                                    <td>{{ ++$i }}</td>
-                                    <td>{{ $student->name }}</td>
-                                    <td>{{ $student->rollno }}</td>
-                                    <td>{{ $student->age }}</td>
-                                    <td>{{ $student->register_date }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade deleteModal" id="" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header header-bg d-flex justify-content-center text-white">
+                        <h1 class="modal-title fs-5 p-0 m-0">削除</h1>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <form id="delForm" method="POST" action="/del-student/">
+                            @csrf
+                            <div class="text-center my-3">本当に削除しますか？</div>
+                            <input type="hidden" value="" name="delRollno" id="delId">
+                            <div class="d-flex justify-content-center mt-2">
+                                <button type="submit" id="delConfirm" class="btn btn-sm my-btn me-2"
+                                    id="deleteBtn">はい</button>
+                                <button type="button" class="btn btn-sm my-btn-outline"
+                                    data-bs-dismiss="modal">いいえ</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

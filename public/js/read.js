@@ -7,7 +7,7 @@ $("#regDate").on('change', function () {
             'regDate': regDate,
         },
         success: function (list) {
-            console.log(list)
+            
             if (list !== null) {
                 createList(list.data);
             }

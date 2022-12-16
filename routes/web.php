@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,8 +37,7 @@ Route::controller(StudentController::class)->group(function () {
     Route::get('/view-all-students', 'read')->name('view-all-students');
     Route::get('/rollSearch', 'getInfo');
     Route::get('/dateSearch', 'getInfo');
+    Route::post('/allLists', 'ajaxList')->name('allLists');
+
 });
-Route::post('/allposts', [App\Http\Controllers\PostController::class, 'allPosts'])->name('allposts');
-Route::get('/test', function () {
-    return view('test');
-});
+
