@@ -28,28 +28,24 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade deleteModal" id="" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header header-bg d-flex justify-content-center text-white">
-                        <h1 class="modal-title fs-5 p-0 m-0">削除</h1>
-                    </div>
-
-                    <div class="modal-body">
-
-                        <form id="delForm" method="POST" action="/del-student/">
-                            @csrf
-                            <div class="text-center my-3">本当に削除しますか？</div>
-                            <input type="hidden" value="" name="delRollno" id="delId">
-                            <div class="d-flex justify-content-center mt-2">
-                                <button type="submit" id="delConfirm" class="btn btn-sm my-btn me-2"
-                                    id="deleteBtn">はい</button>
-                                <button type="button" class="btn btn-sm my-btn-outline"
-                                    data-bs-dismiss="modal">いいえ</button>
-                            </div>
-                        </form>
-                    </div>
+    </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="modal-title text-center w-100" id="exampleModalLabel">本当に削除しますか?</h5>
+                </div>
+                <div class="modal-footer">
+                    <form id="delForm" method="POST" action="/delete-student">
+                        @csrf
+                        <input type="hidden" value="" name="delId" id="delId">
+                        <button type="submit" id="delConfirm" class="btn btn-outline-danger">削除</button>
+                        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">キャンセル</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -57,5 +53,92 @@
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.js"></script>
-    <script type="text/javascript" src="{{ asset('js/read.js') }}"></script>
+    {{-- <script type="text/javascript" src="{{ asset('js/read.js') }}"></script> --}}
+    <script>
+        
+        $("#regDate").on('change', function() {
+            var regDate = $("#regDate").val();
+            $.ajax({
+                type: 'get',
+                url: '/dateSearch/',
+                data: {
+                    'regDate': regDate,
+                },
+                success: function(list) {
+
+                    if (list !== null) {
+                        createList(list.data);
+                    }
+                }
+            });
+        })
+
+        function createList(data) {
+            var table = $('#studentTable').DataTable();
+            table.clear().draw();
+            data.forEach((stu, index) => {
+                table.row.add([`${index + 1}`, `${stu.name}`, `${stu.rollno}`, `${stu.age}`,
+                    `${stu.register_date}`]).draw();
+
+            });
+        }
+        $('#regDate').datepicker({
+            beforeShow: function() {
+                setTimeout(function() {
+                    $('.ui-datepicker').css('z-index', 99999999999999);
+                }, 0);
+            },
+            dateFormat: 'yy-mm-dd'
+        });
+        $("#message").fadeOut(3000);
+        $('#studentList').DataTable({
+            "serverSide": true,
+            "processing": true,
+            "ajax": {
+                "url": "{{ url('allLists') }}",
+                "dataType": "json",
+                "type": "POST",
+                "data": {
+                    _token: "{{ csrf_token() }}"
+                }
+            },
+            "columns": [{
+                    "data": "no"
+                },
+                {
+                    "data": "rollno"
+                },
+                {
+                    "data": "name"
+                },
+                {
+                    "data": "age"
+                },
+                {
+                    "data": "register_date"
+                },
+                {
+                    "render": function() {
+                        return '<button class="btn btn-sm btn-outline-danger" type="button"' +
+                            ' id="delBtn">  ' +
+                            ' 削除 </button>';
+                    }
+                },
+            ],
+            // "ordering": false,
+            // "info": true,
+            // "lengthChange": false,
+            language: {
+                "info": "_START_ から _END_ まで _TOTAL_ 人の生徒を表示する",
+                "infoEmpty": "",
+                "emptyTable": "対象データが見つかりませんでした。",
+                "paginate": {
+                    "first": "初め",
+                    "last": "終わり",
+                    "next": "次へ",
+                    "previous": "前へ"
+                },
+            }
+        });
+    </script>
 @endsection

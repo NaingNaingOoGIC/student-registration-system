@@ -4,9 +4,7 @@
     <div class="container">
 
         <div class="card shadow">
-            <div class="card-header header-bg text-white">
-                生徒一覧
-            </div>
+
             <div class="card-body bg-white">
                 <div class="row mb-3 d-flex justify-content-end">
                     <label for="body" class="col-md-4 col-form-label text-md-end">検索</label>
@@ -99,7 +97,20 @@
                                 ' 削除 </button>';
                         }
                     },
-                ]
+                ],
+                
+                language: {
+                    "info": "_START_ から _END_ まで _TOTAL_ 人の生徒を表示する",
+                    "infoEmpty": "",
+                    "emptyTable": "対象データが見つかりませんでした。",
+                    "paginate": {
+                        "first": "初め",
+                        "last": "終わり",
+                        "next": "次へ",
+                        "previous": "前へ"
+                    },
+                }
+
             });
 
 
